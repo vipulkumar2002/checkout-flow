@@ -1,11 +1,12 @@
 "use client";
 
 import Confirmation from "../../components/Confirmation";
+import PageWrapper from "../PageWrapper";
 
 export default function ConfirmationPage() {
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-6">
+        <PageWrapper>
             <Confirmation />
-        </div>
+        </PageWrapper>
     );
 }

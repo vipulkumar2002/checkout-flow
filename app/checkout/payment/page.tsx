@@ -2,16 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import PaymentForm from "../../components/PaymentForm";
+import PageWrapper from "../PageWrapper";
 
 export default function PaymentPage() {
     const router = useRouter();
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-6">
+        <PageWrapper>
             <PaymentForm
                 onNext={() => router.push("/checkout/confirmation")}
                 onBack={() => router.push("/checkout/cart")}
             />
-        </div>
+        </PageWrapper>
     );
 }

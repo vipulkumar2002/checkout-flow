@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import CartSummary from "../../components/CartSummary";
+import PageWrapper from "../PageWrapper";
 
 export default function CartPage() {
     const router = useRouter();
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-6">
+        <PageWrapper>
             <CartSummary onNext={() => router.push("/checkout/payment")} />
-        </div>
+        </PageWrapper>
     );
 }

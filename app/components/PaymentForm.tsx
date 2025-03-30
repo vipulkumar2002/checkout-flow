@@ -98,7 +98,7 @@ const PaymentForm = ({ onNext, onBack }: any) => {
                     <div className="flex justify-between">
                         <Button variant="outline" onClick={onBack}>Back</Button>
                         <Button
-                            className="w-1/4 bg-green-600 hover:bg-green-700 text-white"
+                            className="w-auto bg-green-600 hover:bg-green-700 text-white"
                             onClick={onNext}
                             disabled={!isFormValid}
                         >Confirm Payment</Button>

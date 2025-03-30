@@ -9,8 +9,49 @@ const PaymentForm = ({ onNext, onBack }: any) => {
     const [cardNumber, setCardNumber] = useState("");
     const [expiry, setExpiry] = useState("");
     const [cvv, setCvv] = useState("");
+    const [errors, setErrors] = useState({ cardNumber: "", expiry: "", cvv: "" });
 
-    const isFormValid = cardNumber && expiry && cvv;
+    const validateCardNumber = (value: string) => {
+        if (value.length < 10) {
+            return "Card number must be at least 10 digits";
+        }
+        return "";
+    };
+
+    const validateExpiry = (value: string) => {
+        const regex = /^(0[1-9]|1[0-2])\/(\d{2})$/;
+        if (!regex.test(value)) {
+            return "Invalid expiry format (MM/YY)";
+        }
+        return "";
+    };
+
+    const validateCvv = (value: string) => {
+        if (value.length < 3) {
+            return "CVC must be at least 3 digits";
+        }
+        return "";
+    };
+
+    const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setCardNumber(value);
+        setErrors({ ...errors, cardNumber: validateCardNumber(value) });
+    };
+
+    const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setExpiry(value);
+        setErrors({ ...errors, expiry: validateExpiry(value) });
+    };
+
+    const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setCvv(value);
+        setErrors({ ...errors, cvv: validateCvv(value) });
+    };
+
+    const isFormValid = !errors.cardNumber && !errors.expiry && !errors.cvv && cardNumber && expiry && cvv;
 
     return (
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
@@ -25,21 +66,33 @@ const PaymentForm = ({ onNext, onBack }: any) => {
                             className="w-full border border-gray-300 p-2 rounded-lg"
                             placeholder="Card Number"
                             value={cardNumber}
-                            onChange={(e) => setCardNumber(e.target.value)}
+                            onChange={handleCardNumberChange}
+                            type="number"
+                            required
                         />
+                        {errors.cardNumber && <p className="text-red-500 text-sm">{errors.cardNumber}</p>}
                         <div className="flex space-x-2">
-                            <Input
-                                placeholder="MM/YY"
-                                className="w-1/2 border border-gray-300 p-2 rounded-lg"
-                                value={expiry}
-                                onChange={(e) => setExpiry(e.target.value)}
-                            />
-                            <Input
-                                placeholder="CVC"
-                                className="w-1/2 border border-gray-300 p-2 rounded-lg"
-                                value={cvv}
-                                onChange={(e) => setCvv(e.target.value)}
-                            />
+                            <div className="w-1/2">
+                                <Input
+                                    placeholder="MM/YY"
+                                    className="w-full border border-gray-300 p-2 rounded-lg"
+                                    value={expiry}
+                                    onChange={handleExpiryChange}
+                                    required
+                                />
+                                {errors.expiry && <p className="text-red-500 text-sm">{errors.expiry}</p>}
+                            </div>
+                            <div className="w-1/2">
+                                <Input
+                                    placeholder="CVC"
+                                    className="w-full border border-gray-300 p-2 rounded-lg"
+                                    value={cvv}
+                                    onChange={handleCvvChange}
+                                    type="number"
+                                    required
+                                />
+                                {errors.cvv && <p className="text-red-500 text-sm">{errors.cvv}</p>}
+                            </div>
                         </div>
                     </div>
                     <div className="flex justify-between">
@@ -53,7 +106,7 @@ const PaymentForm = ({ onNext, onBack }: any) => {
                 </CardContent>
             </Card>
         </motion.div>
-    )
-}
+    );
+};
 
-export default PaymentForm
+export default PaymentForm;
